@@ -1,4 +1,14 @@
+/*
+  StartMpuConnection and RetrieveBuildingAcceleration are based on Shuvashish Sarker code.
+  Link: https://gitlab.com/shuvashish/batikkrom.com/blob/master/MuttipleMPU/MuttipleMPU.ino
+*/
+
 #include <timer.h>
+#include <Wire.h>
+
+//MPU address
+const int mpuBuildingWithoutCW = 0x68;
+const int mpuBuildingWithCW = 0x69;
 
 //Creates the timer to send the data to the labview
 auto sendDataTimer = timer_create_default();
@@ -23,9 +33,11 @@ void setup()
 
   sendDataTimer.every(1000, SendData);
 
+  //Start mpu connecton
+  StartMpuConnection(mpuBuildingWithoutCW);
+  StartMpuConnection(mpuBuildingWithCW);
+
   //Ports
-  pinMode(A0, INPUT);
-  pinMode(A1, INPUT);
   pinMode(12, OUTPUT);
 }
 
@@ -35,8 +47,8 @@ void loop()
   sendDataTimer.tick();
 
   //Get data from sensor
-  buildingWithoutCW = analogRead(A0);
-  buildingWithCW = analogRead(A1);
+  buildingWithoutCW = RetrieveBuildingAcceleration(mpuBuildingWithoutCW);
+  buildingWithCW = RetrieveBuildingAcceleration(mpuBuildingWithCW);
 
   if (Serial.available())
   {
@@ -69,4 +81,66 @@ String Split(String data, char separator, int index)
   }
 
   return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
+//Function to start connection with MPU
+void StartMpuConnection(int mpuAddress)
+{
+  //Create comm with mpu
+  Wire.begin();
+
+  //Start transmission with mpu I2C address
+  Wire.beginTransmission(mpuAddress);
+  //Accessing the register 6B
+  Wire.write(0x6B);
+  //Setting SLEEP register to 0.
+  Wire.write(0b00000000);
+  Wire.endTransmission();
+
+  //Start transmission with mpu I2C address
+  Wire.beginTransmission(mpuAddress);
+  //Accessing the register 1B (Gyroscope)
+  Wire.write(0x1B);
+  //Setting the gyro to full scale +/- 250deg./s
+  Wire.write(0x00000000);
+  Wire.endTransmission();
+
+  Wire.beginTransmission(mpuAddress);
+  //Accessing the register 1C (Acccelerometer)
+  Wire.write(0x1C);
+  //Setting the accel to +/- 2g
+  Wire.write(0b00000000);
+  Wire.endTransmission();
+}
+
+//Function to retrieve and process MPU acceleration
+float RetrieveBuildingAcceleration(int mpuAddress)
+{
+  Wire.beginTransmission(mpuAddress);
+  Wire.write(0x3B);
+  Wire.endTransmission();
+  Wire.requestFrom(mpuAddress, 6);
+  while (Wire.available() < 6);
+
+  //Retrieve accel from MPU
+  long accelX = Wire.read() << 8 | Wire.read();
+  long accelY = Wire.read() << 8 | Wire.read();
+  long accelZ = Wire.read() << 8 | Wire.read();
+
+  Wire.beginTransmission(mpuAddress);
+  Wire.write(0x43);
+  Wire.endTransmission();
+  Wire.requestFrom(mpuAddress, 6);
+  while (Wire.available() < 6);
+
+  //Retrieve gyro from MPU
+  float gyroX = Wire.read() << 8 | Wire.read();
+  float gyroY = Wire.read() << 8 | Wire.read();
+  float gyroZ = Wire.read() << 8 | Wire.read();
+
+  //Process accel data
+  float gForceX = accelX / 16384.0;
+
+  delay(100);
+  return gForceX;
 }
