@@ -13,6 +13,7 @@ namespace Assets.Scripts
         void Start()
         {
             //When start create fade out
+            FadeImage.gameObject.SetActive(true);
             FadeImage.CrossFadeAlpha(0, 2, true);
         }
 
