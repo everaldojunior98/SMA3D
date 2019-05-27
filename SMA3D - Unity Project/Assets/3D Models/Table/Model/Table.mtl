@@ -1,0 +1,55 @@
+newmtl Handle
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.00000 0.00000 0.00000
+Ks 1.00000 1.00000 1.00000
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Table_Handle_Albedo.tga
+bump Table_Handle_Height.tga
+map_bump Table_Handle_Normal.tga
+newmtl Base
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.00000 0.00000 0.00000
+Ks 1.00000 1.00000 1.00000
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Table_Base_Albedo.tga
+bump Table_Base_Height.tga
+map_bump Table_Base_Normal.tga
+newmtl Bolts
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.00000 0.00000 0.00000
+Ks 1.00000 1.00000 1.00000
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Table_Bolts_Albedo.tga
+bump Table_Bolts_Height.tga
+map_bump Table_Bolts_Normal.tga
+newmtl Lock
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.00000 0.00000 0.00000
+Ks 1.00000 1.00000 1.00000
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Table_Lock_Albedo.tga
+bump Table_Lock_Height.tga
+map_bump Table_Lock_Normal.tga
+newmtl Table
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.00000 0.00000 0.00000
+Ks 1.00000 1.00000 1.00000
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Table_Table_Albedo.tga
+bump Table_Table_Height.tga
+map_bump Table_Table_Normal.tga
