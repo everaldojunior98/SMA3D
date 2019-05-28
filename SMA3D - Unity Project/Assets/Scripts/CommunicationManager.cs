@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ namespace Assets.Scripts
 {
     public class CommunicationManager : MonoBehaviour
     {
+        public TableRealBehaviour TableReal;
         public Dropdown PortsDropdown;
 
         private bool _connected;
@@ -19,13 +21,13 @@ namespace Assets.Scripts
 
         void Update()
         {
-            if(!_connected || PortsDropdown == null)
+            if(!_connected || PortsDropdown == null || TableReal == null)
                 return;
 
             //Read data from COM port
             try
             {
-                Debug.Log(_port.ReadLine());
+                ParseData(_port.ReadLine());
             }
             catch (TimeoutException) { }
         }
@@ -68,6 +70,22 @@ namespace Assets.Scripts
         {
             if (_connected)
                 _port.Close();
+        }
+
+        //Parse received data
+        private void ParseData(string data)
+        {
+            if (!string.IsNullOrEmpty(data) && data.Split('#').Length == 3)
+            {
+                var buildingWithoutCw = data.Split('#')[0];
+                var buildingWithCw = data.Split('#')[1];
+                var tableSpeed = data.Split('#')[2];
+
+                if(float.TryParse(buildingWithoutCw, out var freqWithout) && float.TryParse(buildingWithCw, out var freqWith))
+                    TableReal.UpdateValues(freqWithout, freqWith, freqWith / freqWithout);
+                else
+                    TableReal.UpdateValues(0, 0, 0);
+            }
         }
     }
 }
