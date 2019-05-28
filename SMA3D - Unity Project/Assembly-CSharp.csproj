@@ -92,8 +92,10 @@
     <Compile Include="Assets\Field - Complete Main Menu (Lite)\Scripts\UIElementInFront.cs" />
     <Compile Include="Assets\Field - Complete Main Menu (Lite)\Scripts\UIElementSound.cs" />
     <Compile Include="Assets\Scripts\BlockText.cs" />
+    <Compile Include="Assets\Scripts\CommunicationManager.cs" />
     <Compile Include="Assets\Scripts\MenuManager.cs" />
     <Compile Include="Assets\Scripts\MouseOrbitImproved.cs" />
+    <Compile Include="Assets\Scripts\PortsDropdown.cs" />
     <Compile Include="Assets\Scripts\TableRealBehaviour.cs" />
     <Compile Include="Assets\Scripts\TableSimulationBehaviour.cs" />
     <None Include="Assets\_MK\MKGlassFree\Shader\MKGlassCommonFree.shader" />
