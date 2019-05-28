@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,15 +20,19 @@ namespace Assets.Scripts
 
         void Update()
         {
-            if(!_connected || PortsDropdown == null || TableReal == null)
+            if(!_connected || PortsDropdown == null || TableReal == null || !_port.IsOpen)
                 return;
 
             //Read data from COM port
             try
             {
+                Debug.Log(_port.ReadLine());
                 ParseData(_port.ReadLine());
             }
-            catch (TimeoutException) { }
+            catch (TimeoutException)
+            {
+                Disconnect();
+            }
         }
 
         //Close connection on exit from scene
@@ -68,8 +71,11 @@ namespace Assets.Scripts
         //Disconnect if has valid connection
         public void Disconnect()
         {
-            if (_connected)
+            if (_connected && _port.IsOpen)
+            {
                 _port.Close();
+                _connected = false;
+            }
         }
 
         //Parse received data
