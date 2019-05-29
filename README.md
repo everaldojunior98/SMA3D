@@ -5,13 +5,22 @@ SMA3D is a simulator of the damping of a structure using a pendulum as an inerti
 
 With the simulator it is possible to calculate the ideal size of the pendulum, the correction factor and the frequency of the structure with the counterweight.
 
-### Prerequisites
+## Prerequisites
 
 All the simulation was developed using Unity 3D, to continue the development it is necessary to download.
 
 ```
 Unity 3D 2019.1.1 - https://unity3d.com/pt/get-unity/download/archive
 ```
+
+## Screenshots
+![Menu](https://i.ibb.co/vsVDHkZ/3.png)
+
+![Simulation](https://i.ibb.co/4pSY589/1.png)
+
+![Simulation](https://i.ibb.co/6ZJJ33s/2.png)
+
+![Supervisory](https://i.ibb.co/MBMSD3k/4.png)
 
 ## Authors
 

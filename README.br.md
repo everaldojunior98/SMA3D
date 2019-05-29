@@ -5,13 +5,22 @@ SMA3D é um simulador do amortecimento de uma estrutura utilizando um pendulo co
 
 Com o simulador é possivel calcular o tamanho ideal do pêndulo, o fator de correção e a frequência da estrutura com o contrapeso.
 
-### Pré-requisitos
+## Pré-requisitos
 
 Toda a simulação foi desenvolvida utilizando a Unity 3D, para continuar o desenvolvimento é necessario efetuar o download.
 
 ```
 Unity 3D 2019.1.1 - https://unity3d.com/pt/get-unity/download/archive
 ```
+
+## Capturas de tela
+![Menu](https://i.ibb.co/vsVDHkZ/3.png)
+
+![Simulação](https://i.ibb.co/4pSY589/1.png)
+
+![Simulação](https://i.ibb.co/6ZJJ33s/2.png)
+
+![Supervisório](https://i.ibb.co/MBMSD3k/4.png)
 
 ## Autores
 
