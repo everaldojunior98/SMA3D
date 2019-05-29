@@ -20,6 +20,19 @@ float buildingWithCW = 0;
 
 float tableSpeed = 0;
 
+//Frequency withoutCW
+int withoutCWInversions = 0;
+unsigned long int withoutCWLastTime = 0;
+float withoutCWLastAccel = 0;
+float withoutCWPeriod = 0;
+
+//Frequency withCW
+int withCWInversions = 0;
+unsigned long int withCWLastTime = 0;
+float withCWLastAccel = 0;
+float withCWPeriod = 0;
+
+
 bool SendData(void *)
 {
   Serial.println(String(buildingWithoutCW) + "#" + String(buildingWithCW) + "#" + String(tableSpeed));
@@ -47,8 +60,40 @@ void loop()
   sendDataTimer.tick();
 
   //Get data from sensor
-  buildingWithoutCW = RetrieveBuildingAcceleration(mpuBuildingWithoutCW);
-  buildingWithCW = RetrieveBuildingAcceleration(mpuBuildingWithCW);
+  float accelWithoutCW = RetrieveBuildingAcceleration(mpuBuildingWithoutCW);
+  float accelWithCW = RetrieveBuildingAcceleration(mpuBuildingWithCW);
+
+  //Calculates frequency without CW
+  if (accelWithoutCW < 0 && withoutCWLastAccel > 0)
+    withoutCWInversions++;
+  else if (accelWithoutCW > 0 && withoutCWLastAccel < 0)
+    withoutCWInversions++;
+
+  if (withoutCWInversions == 2)
+  {
+    withoutCWPeriod = millis() - withoutCWLastTime;
+    withoutCWInversions = 0;
+    withoutCWLastTime = millis();
+    buildingWithoutCW = (1000.0 / withoutCWPeriod);
+  }
+
+  withoutCWLastAccel = accelWithoutCW;
+
+  //Calculates frequency with CW
+  if (accelWithCW < 0 && withCWLastAccel > 0)
+    withCWInversions++;
+  else if (accelWithCW > 0 && withCWLastAccel < 0)
+    withCWInversions++;
+
+  if (withCWInversions == 2)
+  {
+    withCWPeriod = millis() - withCWLastTime;
+	withCWInversions = 0;
+	withCWLastTime = millis();
+	buildingWithCW = (1000.0 / withCWPeriod);
+  }
+
+  withCWLastAccel = accelWithCW;
 
   if (Serial.available())
   {
@@ -61,6 +106,8 @@ void loop()
       analogWrite(12, tableSpeed);
     }
   }
+  
+  delay(10);
 }
 
 //Function to split strings based on separator
@@ -141,6 +188,5 @@ float RetrieveBuildingAcceleration(int mpuAddress)
   //Process accel data
   float gForceX = accelX / 16384.0;
 
-  delay(100);
   return gForceX;
 }
