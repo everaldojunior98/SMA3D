@@ -5,6 +5,7 @@
 
 #include <timer.h>
 #include <Wire.h>
+#include <SoftwareSerial.h>
 
 //MPU address
 const int mpuBuildingWithoutCW = 0x68;
@@ -32,10 +33,12 @@ unsigned long int withCWLastTime = 0;
 float withCWLastAccel = 0;
 float withCWPeriod = 0;
 
+SoftwareSerial SerialLabview(3, 2); // RX, TX
 
 bool SendData(void *)
 {
   Serial.println(String(buildingWithoutCW) + "#" + String(buildingWithCW) + "#" + String(tableSpeed));
+  SerialLabview.println(String(buildingWithoutCW) + "#" + String(buildingWithCW) + "#" + String(tableSpeed));
 
   return true;
 }
@@ -43,8 +46,9 @@ bool SendData(void *)
 void setup()
 {
   Serial.begin(9600);
+  SerialLabview.begin(9600);
 
-  sendDataTimer.every(1000, SendData);
+  sendDataTimer.every(250, SendData);
 
   //Start mpu connecton
   StartMpuConnection(mpuBuildingWithoutCW);
@@ -60,40 +64,8 @@ void loop()
   sendDataTimer.tick();
 
   //Get data from sensor
-  float accelWithoutCW = RetrieveBuildingAcceleration(mpuBuildingWithoutCW);
-  float accelWithCW = RetrieveBuildingAcceleration(mpuBuildingWithCW);
-
-  //Calculates frequency without CW
-  if (accelWithoutCW < 0 && withoutCWLastAccel > 0)
-    withoutCWInversions++;
-  else if (accelWithoutCW > 0 && withoutCWLastAccel < 0)
-    withoutCWInversions++;
-
-  if (withoutCWInversions == 2)
-  {
-    withoutCWPeriod = millis() - withoutCWLastTime;
-    withoutCWInversions = 0;
-    withoutCWLastTime = millis();
-    buildingWithoutCW = (1000.0 / withoutCWPeriod);
-  }
-
-  withoutCWLastAccel = accelWithoutCW;
-
-  //Calculates frequency with CW
-  if (accelWithCW < 0 && withCWLastAccel > 0)
-    withCWInversions++;
-  else if (accelWithCW > 0 && withCWLastAccel < 0)
-    withCWInversions++;
-
-  if (withCWInversions == 2)
-  {
-    withCWPeriod = millis() - withCWLastTime;
-	withCWInversions = 0;
-	withCWLastTime = millis();
-	buildingWithCW = (1000.0 / withCWPeriod);
-  }
-
-  withCWLastAccel = accelWithCW;
+  buildingWithoutCW = RetrieveBuildingAcceleration(mpuBuildingWithoutCW);
+  buildingWithCW = RetrieveBuildingAcceleration(mpuBuildingWithCW);
 
   if (Serial.available())
   {
@@ -107,7 +79,7 @@ void loop()
     }
   }
   
-  delay(10);
+  delay(100);
 }
 
 //Function to split strings based on separator
