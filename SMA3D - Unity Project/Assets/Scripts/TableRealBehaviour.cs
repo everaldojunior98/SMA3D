@@ -16,7 +16,7 @@ namespace Assets.Scripts
         public Text BuildingWithCwText;
         public Text CorrectionFactorText;
 
-        //Transforms to set oscilation position
+        //Transforms to set oscillation position
         public Transform TableTransform;
         public Transform BuildingWithoutCwTransform;
         public Transform BuildingWithCwTransform;
@@ -31,6 +31,21 @@ namespace Assets.Scripts
         private float _frequencyWithoutCw;
         private float _frequencyWithCw;
 
+        //Timer to calculate frequency
+        private float _timer = 1;
+
+        //Vars to calculate frequency
+        private float _lastAccelWithoutCw;
+        private int _inversionsWithoutCw;
+        private float _periodWithoutCw;
+        private float _lastPeriodWithoutCw;
+
+        //Vars to calculate frequency
+        private float _lastAccelWithCw;
+        private int _inversionsWithCw;
+        private float _periodWithCw;
+        private float _lastPeriodWithCw;
+
         //Table max amplitude
         private float _amplitude = 0.35f;
 
@@ -40,14 +55,47 @@ namespace Assets.Scripts
         void Start()
         {
             _isConnected = false;
+
+            //Fill HUD
+            BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " 0.00 Hz";
+            BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " 0.00 Hz";
+            CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " 0.00%";
         }
 
-        public void UpdateValues(float frequencyWithoutCw, float frequencyWithCw, float correctionFactor)
+        public void UpdateValues(float accelWithoutCw, float accelWithCw, float correctionFactor)
         {
             _isConnected = true;
-            _frequencyWithoutCw = frequencyWithoutCw;
-            _frequencyWithCw = frequencyWithCw;
             _correctionFactor = correctionFactor;
+
+            //Calculate period for structure without CW
+            if (accelWithoutCw < 0 && _lastAccelWithoutCw > 0)
+                _inversionsWithoutCw++;
+            else if (accelWithoutCw > 0 && _lastAccelWithoutCw < 0)
+                _inversionsWithoutCw++;
+
+            if (_inversionsWithoutCw == 2)
+            {
+                _periodWithoutCw = Time.time - _lastPeriodWithoutCw;
+                _inversionsWithoutCw = 0;
+                _lastPeriodWithoutCw = Time.time;
+            }
+
+            _lastAccelWithoutCw = accelWithoutCw;
+
+            //Calculate period for structure with CW
+            if (accelWithCw < 0 && _lastAccelWithCw > 0)
+                _inversionsWithCw++;
+            else if (accelWithCw > 0 && _lastAccelWithCw < 0)
+                _inversionsWithCw++;
+
+            if (_inversionsWithCw == 2)
+            {
+                _periodWithCw = Time.time - _lastPeriodWithCw;
+                _inversionsWithCw = 0;
+                _lastPeriodWithCw = Time.time;
+            }
+
+            _lastAccelWithCw = accelWithCw;
         }
 
         void Update()
@@ -55,12 +103,22 @@ namespace Assets.Scripts
             if (!_isConnected)
                 return;
 
-            //Fill HUD
-            BuildingWithoutCwText.text = "Frequência: " + _frequencyWithoutCw.ToString("F2") + " Hz";
-            BuildingWithCwText.text = "Frequência: " + _frequencyWithCw.ToString("F2") + " Hz";
-            CorrectionFactorText.text = "Fator: " + (_correctionFactor * 100).ToString("F2") + "%";
+            //Calculates frequency
+            _timer -= Time.deltaTime;
+            if (_timer < 0)
+            {
+                _frequencyWithoutCw = 1 / _periodWithoutCw;
+                _frequencyWithCw = 1 / _periodWithCw;
+                
+                _timer = 1;
+            }
 
-            //Calculate the oscilation based on equation ASin(wt) and set objects position
+            //Fill HUD
+            BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + _frequencyWithoutCw.ToString("F2") + " Hz";
+            BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + _frequencyWithCw.ToString("F2") + " Hz";
+            CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " + (_correctionFactor * 100).ToString("F2") + "%";
+
+            //Calculate the oscillation based on equation ASin(wt) and set objects position
             if (TableTransform != null && BuildingWithoutCwTransform != null && BuildingWithCwTransform != null)
             {
                 var posByTimeWithoutCw = _amplitude * Mathf.Sin(2 * Mathf.PI * _frequencyWithoutCw * Time.time);

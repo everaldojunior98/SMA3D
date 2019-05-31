@@ -96,8 +96,10 @@
     <Compile Include="Assets\Scripts\MenuManager.cs" />
     <Compile Include="Assets\Scripts\MouseOrbitImproved.cs" />
     <Compile Include="Assets\Scripts\PortsDropdown.cs" />
+    <Compile Include="Assets\Scripts\SetTranslation.cs" />
     <Compile Include="Assets\Scripts\TableRealBehaviour.cs" />
     <Compile Include="Assets\Scripts\TableSimulationBehaviour.cs" />
+    <Compile Include="Assets\Scripts\TranslationManager.cs" />
     <None Include="Assets\_MK\MKGlassFree\Shader\MKGlassCommonFree.shader" />
     <None Include="Assets\_MK\MKGlassFree\Shader\Inc\Common\MKGlassInc.cginc" />
     <None Include="Assets\_MK\MKGlassFree\Shader\Inc\Meta\MKGlassMetaIO.cginc" />
