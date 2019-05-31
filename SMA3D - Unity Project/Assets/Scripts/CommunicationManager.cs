@@ -59,18 +59,22 @@ namespace Assets.Scripts
 
                 _readThread = new Thread(() =>
                 {
-                    //Read data from COM port
-                    try
+                    while (true)
                     {
-                        Debug.Log(_port.ReadLine());
-                        ParseData(_port.ReadLine());
+                        //Read data from COM port
+                        try
+                        {
+                            Debug.Log(_port.ReadLine());
+                            ParseData(_port.ReadLine());
+                        }
+                        catch (TimeoutException)
+                        {
+                            Disconnect();
+                        }
+                        Thread.Sleep(Mathf.Abs(ReadDelay));
                     }
-                    catch (TimeoutException)
-                    {
-                        Disconnect();
-                    }
-                    Thread.Sleep(Mathf.Abs(ReadDelay));
                 });
+                _readThread.Start();
             }
             catch
             {
