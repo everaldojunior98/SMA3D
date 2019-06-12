@@ -55,6 +55,12 @@ namespace Assets.Scripts
         {
             _isSimulating = false;
             _usingPendulumLenght = false;
+
+            //Fill HUD
+            BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " 0.00 Hz";
+            BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " 0.00 Hz";
+            CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " 0.00%";
+            PendulumLenghtText.text = TranslationManager.Instance.GetTranslation("LENGTH") + " 0.00 m";
         }
 
         void Update()
@@ -84,10 +90,10 @@ namespace Assets.Scripts
             }
 
             //Fill HUD
-            BuildingWithoutCwText.text = "Frequência: " + FrequencyWithoutCw.ToString("F2") + " Hz";
-            BuildingWithCwText.text = "Frequência: " + FrequencyWithCw.ToString("F2") + " Hz";
-            CorrectionFactorText.text = "Fator: " + (CorrectionFactor * 100).ToString("F2") + "%";
-            PendulumLenghtText.text = "Comprimento : " + PendulumLength.ToString("F2") + " m";
+            BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + FrequencyWithoutCw.ToString("F2") + " Hz";
+            BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + FrequencyWithCw.ToString("F2") + " Hz";
+            CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " + (CorrectionFactor * 100).ToString("F2") + "%";
+            PendulumLenghtText.text = TranslationManager.Instance.GetTranslation("LENGTH") + " " + PendulumLength.ToString("F2") + " m";
 
             //Calculate the oscilation based on equation ASin(wt) and set objects position
             if (TableTransform != null && BuildingWithoutCwTransform != null && BuildingWithCwTransform != null)

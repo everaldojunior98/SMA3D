@@ -8,10 +8,12 @@ namespace Assets.Scripts
     {
         //Key for translation
         public string Key;
-
+        
         void Update()
         {
-            transform.GetComponent<Text>().text = TranslationManager.Instance.GetTranslation(Key);
+            if (TranslationManager.Instance != null)
+
+                transform.GetComponent<Text>().text = TranslationManager.Instance.GetTranslation(Key);
         }
     }
 }
