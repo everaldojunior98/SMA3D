@@ -37,3 +37,6 @@ Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](
 * Raphael Leal - Desenvolvimento do controlador PID.
 * Shuvashish Sarker - [Multiple MPU code](https://gitlab.com/shuvashish/batikkrom.com/blob/master/MuttipleMPU/MuttipleMPU.ino)
 * Veli V - [Mouse Orbit Improved](https://wiki.unity3d.com/index.php/MouseOrbitImproved)
+
+
+* Ícones feitos por ![Freepik][https://www.freepik.com/] licenciado por CC 3.0 BY
