@@ -39,4 +39,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Veli V - [Mouse Orbit Improved](https://wiki.unity3d.com/index.php/MouseOrbitImproved)
 
 
-* Flag icons made by ![Freepik][https://www.freepik.com/] licensed by CC 3.0 BY
+* Flag icons made by [Freepik][https://www.freepik.com/] licensed by CC 3.0 BY

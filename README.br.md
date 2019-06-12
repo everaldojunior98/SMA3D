@@ -39,4 +39,4 @@ Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](
 * Veli V - [Mouse Orbit Improved](https://wiki.unity3d.com/index.php/MouseOrbitImproved)
 
 
-* Ícones feitos por ![Freepik][https://www.freepik.com/] licenciado por CC 3.0 BY
+* Ícones feitos por [Freepik][https://www.freepik.com/] licenciado por CC 3.0 BY
