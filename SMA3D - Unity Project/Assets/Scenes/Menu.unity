@@ -571,7 +571,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 58.060688, y: 0}
+  m_AnchoredPosition: {x: 54.72414, y: 0}
   m_SizeDelta: {x: 0, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &51253056
@@ -14903,7 +14903,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 58.060688, y: 0}
+  m_AnchoredPosition: {x: 54.72414, y: 0}
   m_SizeDelta: {x: 0, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &864573448
@@ -18636,7 +18636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 128, y: -37.00003}
+  m_AnchoredPosition: {x: 128, y: -37}
   m_SizeDelta: {x: 1648.9, y: -972}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1045047409
@@ -42040,7 +42040,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -40.00003}
+  m_AnchoredPosition: {x: 0, y: -40}
   m_SizeDelta: {x: -1220, y: -810}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1963039153
@@ -45793,6 +45793,7 @@ GameObject:
   - component: {fileID: 224929517930761153}
   - component: {fileID: 222260429893389467}
   - component: {fileID: 114796759717591995}
+  - component: {fileID: 1417816967982112}
   m_Layer: 5
   m_Name: Title Text Hover
   m_TagString: Untagged
@@ -45800,6 +45801,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1417816967982112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417816967982111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17049b53ef252dc449c3c49d35d09bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: REAL
 --- !u!1 &1417817295913331
 GameObject:
   m_ObjectHideFlags: 0
@@ -45811,6 +45825,7 @@ GameObject:
   - component: {fileID: 224929516110177965}
   - component: {fileID: 222260428486992375}
   - component: {fileID: 114796758179583703}
+  - component: {fileID: 1417817295913332}
   m_Layer: 5
   m_Name: Title Text Hover
   m_TagString: Untagged
@@ -45818,6 +45833,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1417817295913332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417817295913331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17049b53ef252dc449c3c49d35d09bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: SIMULATION
 --- !u!1 &1561135035990437
 GameObject:
   m_ObjectHideFlags: 0
