@@ -123,12 +123,16 @@ namespace Assets.Scripts
             {
                 var posByTimeWithoutCw = _amplitude * Mathf.Sin(2 * Mathf.PI * _frequencyWithoutCw * Time.time);
                 var posByTimeWithCw = _amplitude * Mathf.Sin(2 * Mathf.PI * _frequencyWithCw * Time.time);
-                TableTransform.position = new Vector3(posByTimeWithoutCw, TableTransform.position.y, TableTransform.position.z);
+                TableTransform.position =
+                    new Vector3(posByTimeWithoutCw, TableTransform.position.y, TableTransform.position.z);
 
-                PendulumTransform.eulerAngles = new Vector3(PendulumTransform.eulerAngles.x, PendulumTransform.eulerAngles.y,  OscillationCoefficient * posByTimeWithoutCw);
+                PendulumTransform.eulerAngles = new Vector3(PendulumTransform.eulerAngles.x,
+                    PendulumTransform.eulerAngles.y, OscillationCoefficient * posByTimeWithoutCw);
 
-                BuildingWithoutCwTransform.eulerAngles = new Vector3(BuildingWithoutCwTransform.eulerAngles.x, BuildingWithoutCwTransform.eulerAngles.y, -90 - OscillationCoefficient * posByTimeWithoutCw);
-                BuildingWithCwTransform.eulerAngles = new Vector3(BuildingWithCwTransform.eulerAngles.x, BuildingWithCwTransform.eulerAngles.y, -90 - OscillationCoefficient * posByTimeWithCw);
+                BuildingWithoutCwTransform.eulerAngles = new Vector3(BuildingWithoutCwTransform.eulerAngles.x,
+                    BuildingWithoutCwTransform.eulerAngles.y, -90 - OscillationCoefficient * posByTimeWithoutCw);
+                BuildingWithCwTransform.eulerAngles = new Vector3(BuildingWithCwTransform.eulerAngles.x,
+                    BuildingWithCwTransform.eulerAngles.y, -90 - OscillationCoefficient * posByTimeWithCw);
             }
         }
     }

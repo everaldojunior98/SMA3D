@@ -47,12 +47,33 @@ namespace Assets.Scripts
                 {"PENDULUM_LENGTH", Tuple.Create("Pendulum length (m)", "Comprimento do pêndulo (m)")},
                 {"SIMULATE", Tuple.Create("SIMULATE", "SIMULAR")},
                 {"LENGTH", Tuple.Create("LENGTH:", "Comprimento:")},
+                {"SOURCE", Tuple.Create("SOURCE CODE", "CÓDIGO FONTE")},
                 {"REAL", Tuple.Create("REAL", "REAL")},
-                {"DESC_SIMULATION", Tuple.Create("DESIGN AND TEST THE INERTIAL COUNTER-COUNTRY SYSTEM", "PROJETE E TESTE O SISTEMA DE CONTRAPESO INERCIAL")},
-                {"DESC_REAL", Tuple.Create("CONNECT AND SUPERVISION THE BEHAVIOR OF STRUCTURES", "CONECTE E SUPERVISIONE O COMPORTAMENTO DAS ESTRUTURAS")},
-                {"DESC_SOURCE", Tuple.Create("SOURCE CODE IS AVAILABLE ON GITHUB", "CÓDIGO FONTE DISPONÍVEL NO GITHUB")},
-                {"DESC_INFO", Tuple.Create("Students:\nEveraldo Chaves de Oliveira Junior\nFabiano Moreira da Silva\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\nRayssa Cibien Alves de Souza\n\nTeacher: David de Almeida Fiorillo", "Alunos:\nEveraldo Chaves de Oliveira Junior\nFabiano Moreira da Silva\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\nRayssa Cibien Alves de Souza\n\nProfessor: David de Almeida Fiorillo")},
-                { "TITLE", Tuple.Create("Damping monitoring system of a structure through inertial counterweight", "Sistema de Monitoramento do Amortecimento de uma estrutura através de contrapeso inercial")},
+                {
+                    "DESC_SIMULATION",
+                    Tuple.Create("DESIGN AND TEST THE INERTIAL COUNTER-COUNTRY SYSTEM",
+                        "PROJETE E TESTE O SISTEMA DE CONTRAPESO INERCIAL")
+                },
+                {
+                    "DESC_REAL",
+                    Tuple.Create("CONNECT AND SUPERVISION THE BEHAVIOR OF STRUCTURES",
+                        "CONECTE E SUPERVISIONE O COMPORTAMENTO DAS ESTRUTURAS")
+                },
+                {
+                    "DESC_SOURCE",
+                    Tuple.Create("SOURCE CODE IS AVAILABLE ON GITHUB", "CÓDIGO FONTE DISPONÍVEL NO GITHUB")
+                },
+                {
+                    "DESC_INFO",
+                    Tuple.Create(
+                        "Students:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\nTeacher: David de Almeida Fiorillo",
+                        "Alunos:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\nProfessor: David de Almeida Fiorillo")
+                },
+                {
+                    "TITLE",
+                    Tuple.Create("Damping monitoring system of a structure through inertial counterweight",
+                        "Sistema de Monitoramento do Amortecimento de uma estrutura através de contrapeso inercial")
+                },
                 {"FACTOR", Tuple.Create("Factor:", "Fator:")}
             };
         }

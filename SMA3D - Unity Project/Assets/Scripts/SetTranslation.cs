@@ -12,7 +12,6 @@ namespace Assets.Scripts
         void Update()
         {
             if (TranslationManager.Instance != null)
-
                 transform.GetComponent<Text>().text = TranslationManager.Instance.GetTranslation(Key);
         }
     }

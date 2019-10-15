@@ -49,12 +49,12 @@ namespace Assets.Scripts
 
         //variables to control simulation state
         private bool _isSimulating;
-        private bool _usingPendulumLenght;
+        private bool _usingPendulumLength;
 
         void Start()
         {
             _isSimulating = false;
-            _usingPendulumLenght = false;
+            _usingPendulumLength = false;
 
             //Fill HUD
             BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " 0.00 Hz";
@@ -68,20 +68,20 @@ namespace Assets.Scripts
             if (!_isSimulating)
                 return;
 
-            if (_usingPendulumLenght)
+            if (_usingPendulumLength)
             {
-                //if user set pendulum lenght calculate de pendulum frequency = 1/(2*pi*(l/g)^(1/2)) and correction factor
+                //if user set pendulum length calculate de pendulum frequency = 1/(2*pi*(l/g)^(1/2)) and correction factor
                 FrequencyWithCw = FrequencyWithoutCw - 1 / (2 * Mathf.PI * Mathf.Sqrt(PendulumLength/9.8f));
                 CorrectionFactor = 1 - FrequencyWithCw / FrequencyWithoutCw;
             }
             else
             {
-                //if use correction factor calculate pendulum lenght
-                PendulumLength = CalculatePendulumLenght(CorrectionFactor * FrequencyWithoutCw);
+                //if use correction factor calculate pendulum length
+                PendulumLength = CalculatePendulumLength(CorrectionFactor * FrequencyWithoutCw);
                 FrequencyWithCw = (1 - CorrectionFactor) * FrequencyWithoutCw;
             }
 
-            //Set the pendulum lenght
+            //Set the pendulum length
             if (_lastPendulumLength != PendulumLength)
             {
                 _lastPendulumLength = PendulumLength;
@@ -95,7 +95,7 @@ namespace Assets.Scripts
             CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " + (CorrectionFactor * 100).ToString("F2") + "%";
             PendulumLenghtText.text = TranslationManager.Instance.GetTranslation("LENGTH") + " " + PendulumLength.ToString("F2") + " m";
 
-            //Calculate the oscilation based on equation ASin(wt) and set objects position
+            //Calculate the oscillation based on equation ASin(wt) and set objects position
             if (TableTransform != null && BuildingWithoutCwTransform != null && BuildingWithCwTransform != null)
             {
                 var posByTime = _amplitude * Mathf.Sin(2 * Mathf.PI * FrequencyWithoutCw * Time.time);
@@ -115,15 +115,18 @@ namespace Assets.Scripts
                 FrequencyWithoutCw = freq;
             else
                 canExecute = false;
-            
-            if (!string.IsNullOrEmpty(UiCorrectionFactor.text) && float.TryParse(UiCorrectionFactor.text.Replace(".", ","), out var correc) && correc <= 100 && correc >= 0)
+
+            if (!string.IsNullOrEmpty(UiCorrectionFactor.text) &&
+                float.TryParse(UiCorrectionFactor.text.Replace(".", ","), out var correc) && correc <= 100 &&
+                correc >= 0)
             {
-                _usingPendulumLenght = false;
+                _usingPendulumLength = false;
                 CorrectionFactor = correc / 100;
             }
-            else if (!string.IsNullOrEmpty(UiPendulumLenght.text) && float.TryParse(UiPendulumLenght.text.Replace(".", ","), out var pendulum) && pendulum >= 0)
+            else if (!string.IsNullOrEmpty(UiPendulumLenght.text) &&
+                     float.TryParse(UiPendulumLenght.text.Replace(".", ","), out var pendulum) && pendulum >= 0)
             {
-                _usingPendulumLenght = true;
+                _usingPendulumLength = true;
                 PendulumLength = pendulum;
             }
             else
@@ -132,7 +135,7 @@ namespace Assets.Scripts
             _isSimulating = canExecute;
         }
 
-        private float CalculatePendulumLenght(float frequency)
+        private float CalculatePendulumLength(float frequency)
         {
             return 9.8f * Mathf.Pow(1 / (2 * Mathf.PI * frequency), 2);
         }

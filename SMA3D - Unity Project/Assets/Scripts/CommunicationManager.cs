@@ -10,7 +10,7 @@ namespace Assets.Scripts
     {
         public TableRealBehaviour TableReal;
         public Dropdown PortsDropdown;
-        public int ReadDelay = 250;
+        public int ReadDelay = 10;
 
         private bool _connected;
         private SerialPort _port;
@@ -20,10 +20,6 @@ namespace Assets.Scripts
         void Start()
         {
             _connected = false;
-        }
-
-        void Update()
-        {
         }
 
         //Close connection on exit from scene
@@ -44,7 +40,7 @@ namespace Assets.Scripts
                 _port = new SerialPort
                 {
                     PortName = PortsDropdown.options[PortsDropdown.value].text,
-                    BaudRate = 9600,
+                    BaudRate = 115200,
                     ReadTimeout = 2000,
                     WriteTimeout = 2000
                 };
@@ -71,7 +67,7 @@ namespace Assets.Scripts
                         {
                             Disconnect();
                         }
-                        Thread.Sleep(Mathf.Abs(ReadDelay));
+                        Thread.Sleep(ReadDelay);
                     }
                 });
                 _readThread.Start();
