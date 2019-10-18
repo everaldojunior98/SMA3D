@@ -24,7 +24,11 @@ namespace Assets.Scripts
                 if(SceneManager.GetActiveScene().buildIndex == 0)
                     Application.Quit();
                 else
+                {
+                    DebugGUI.RemoveGraph("WithCW");
+                    DebugGUI.RemoveGraph("WithoutCW");
                     LoadScene(0);
+                }
         }
 
         public void LoadScene(int id)

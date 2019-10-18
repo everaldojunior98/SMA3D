@@ -17,6 +17,9 @@ namespace Assets.Scripts
 
         private Thread _readThread;
 
+        private float _buildingWithoutCw;
+        private float _buildingWithCw;
+
         void Start()
         {
             _connected = false;
@@ -40,7 +43,7 @@ namespace Assets.Scripts
                 _port = new SerialPort
                 {
                     PortName = PortsDropdown.options[PortsDropdown.value].text,
-                    BaudRate = 115200,
+                    BaudRate = 9600,
                     ReadTimeout = 2000,
                     WriteTimeout = 2000
                 };
@@ -71,6 +74,12 @@ namespace Assets.Scripts
                     }
                 });
                 _readThread.Start();
+
+                DebugGUI.SetGraphProperties("WithCW", TranslationManager.Instance.GetTranslation("STRUCTURE_WITH"), -1, 1, 1, Color.white, true);
+                DebugGUI.SetGraphProperties("WithoutCW", TranslationManager.Instance.GetTranslation("STRUCTURE_WITHOUT"), -1, 1, 2, Color.red, true);
+
+                DebugGUI.SetGraphProperties("WithCW1", TranslationManager.Instance.GetTranslation("STRUCTURE_WITH"), -1, 1, 0, Color.white, true);
+                DebugGUI.SetGraphProperties("WithoutCW1", TranslationManager.Instance.GetTranslation("STRUCTURE_WITHOUT"), -1, 1, 0, Color.red, true);
             }
             catch
             {
@@ -91,19 +100,29 @@ namespace Assets.Scripts
             }
         }
 
+        public void Update()
+        {
+            if(!_connected)
+                return;
+
+            DebugGUI.Graph("WithCW", _buildingWithCw);
+            DebugGUI.Graph("WithoutCW", _buildingWithoutCw);
+
+            DebugGUI.Graph("WithCW1", _buildingWithCw);
+            DebugGUI.Graph("WithoutCW1", _buildingWithoutCw);
+        }
+
+        public float tableSpeed;
         //Parse received data
         private void ParseData(string data)
         {
             if (!string.IsNullOrEmpty(data) && data.Split('#').Length == 3)
             {
-                var buildingWithoutCw = data.Split('#')[0];
-                var buildingWithCw = data.Split('#')[1];
-                var tableSpeed = data.Split('#')[2];
+                _buildingWithoutCw = float.Parse(data.Split('#')[0])/100;
+                _buildingWithCw = float.Parse(data.Split('#')[1])/100;
+                //var tableSpeed = float.Parse(data.Split('#')[2]);
 
-                if(float.TryParse(buildingWithoutCw, out var accelWithoutCw) && float.TryParse(buildingWithCw, out var accelWithCw))
-                    TableReal.UpdateValues(accelWithoutCw, accelWithCw, accelWithCw / accelWithoutCw);
-                else
-                    TableReal.UpdateValues(0, 0, 0);
+                TableReal.UpdateValues(_buildingWithoutCw, _buildingWithCw, tableSpeed);
             }
         }
     }

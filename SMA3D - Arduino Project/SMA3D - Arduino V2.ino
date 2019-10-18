@@ -23,7 +23,7 @@ void loop()
   mpuBuildingWithoutCW.update();
   mpuBuildingWithCW.update();
 
-  if(millis() - timer > 50)
+  if(millis() - timer > 10)
   {
     //Send data
     Serial.println(String(mpuBuildingWithoutCW.getAccX()) + "#" + String(mpuBuildingWithCW.getAccX()) + "#" + String(tableSpeed));

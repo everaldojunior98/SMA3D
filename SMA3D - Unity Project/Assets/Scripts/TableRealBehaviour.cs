@@ -52,6 +52,11 @@ namespace Assets.Scripts
         //Var to control connection with Arduino
         private bool _isConnected;
 
+
+        private float _accelWithout;
+        private float _accelWith;
+        private float _tableSpeed;
+
         void Start()
         {
             _isConnected = false;
@@ -62,40 +67,13 @@ namespace Assets.Scripts
             CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " 0.00%";
         }
 
-        public void UpdateValues(float accelWithoutCw, float accelWithCw, float correctionFactor)
+        public void UpdateValues(float accelWithoutCw, float accelWithCw, float tableSpeed)
         {
             _isConnected = true;
-            _correctionFactor = correctionFactor;
 
-            //Calculate period for structure without CW
-            if (accelWithoutCw < 0 && _lastAccelWithoutCw > 0)
-                _inversionsWithoutCw++;
-            else if (accelWithoutCw > 0 && _lastAccelWithoutCw < 0)
-                _inversionsWithoutCw++;
-
-            if (_inversionsWithoutCw == 2)
-            {
-                _periodWithoutCw = Time.time - _lastPeriodWithoutCw;
-                _inversionsWithoutCw = 0;
-                _lastPeriodWithoutCw = Time.time;
-            }
-
-            _lastAccelWithoutCw = accelWithoutCw;
-
-            //Calculate period for structure with CW
-            if (accelWithCw < 0 && _lastAccelWithCw > 0)
-                _inversionsWithCw++;
-            else if (accelWithCw > 0 && _lastAccelWithCw < 0)
-                _inversionsWithCw++;
-
-            if (_inversionsWithCw == 2)
-            {
-                _periodWithCw = Time.time - _lastPeriodWithCw;
-                _inversionsWithCw = 0;
-                _lastPeriodWithCw = Time.time;
-            }
-
-            _lastAccelWithCw = accelWithCw;
+            _accelWithout = accelWithoutCw;
+            _accelWith = accelWithCw;
+            _tableSpeed = tableSpeed;
         }
 
         void Update()
@@ -118,21 +96,14 @@ namespace Assets.Scripts
             BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + _frequencyWithCw.ToString("F2") + " Hz";
             CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " + (_correctionFactor * 100).ToString("F2") + "%";
 
-            //Calculate the oscillation based on equation ASin(wt) and set objects position
             if (TableTransform != null && BuildingWithoutCwTransform != null && BuildingWithCwTransform != null)
             {
-                var posByTimeWithoutCw = _amplitude * Mathf.Sin(2 * Mathf.PI * _frequencyWithoutCw * Time.time);
-                var posByTimeWithCw = _amplitude * Mathf.Sin(2 * Mathf.PI * _frequencyWithCw * Time.time);
-                TableTransform.position =
-                    new Vector3(posByTimeWithoutCw, TableTransform.position.y, TableTransform.position.z);
+                TableTransform.position = new Vector3(_accelWithout * _amplitude, TableTransform.position.y, TableTransform.position.z);
 
-                PendulumTransform.eulerAngles = new Vector3(PendulumTransform.eulerAngles.x,
-                    PendulumTransform.eulerAngles.y, OscillationCoefficient * posByTimeWithoutCw);
+                PendulumTransform.eulerAngles = new Vector3(PendulumTransform.eulerAngles.x, PendulumTransform.eulerAngles.y, - OscillationCoefficient * _accelWithout * 2);
 
-                BuildingWithoutCwTransform.eulerAngles = new Vector3(BuildingWithoutCwTransform.eulerAngles.x,
-                    BuildingWithoutCwTransform.eulerAngles.y, -90 - OscillationCoefficient * posByTimeWithoutCw);
-                BuildingWithCwTransform.eulerAngles = new Vector3(BuildingWithCwTransform.eulerAngles.x,
-                    BuildingWithCwTransform.eulerAngles.y, -90 - OscillationCoefficient * posByTimeWithCw);
+                BuildingWithoutCwTransform.eulerAngles = new Vector3(BuildingWithoutCwTransform.eulerAngles.x, BuildingWithoutCwTransform.eulerAngles.y, -90 - 10 * _accelWithout);
+                BuildingWithCwTransform.eulerAngles = new Vector3(BuildingWithCwTransform.eulerAngles.x, BuildingWithCwTransform.eulerAngles.y, -90 - 10 * _accelWith);
             }
         }
     }

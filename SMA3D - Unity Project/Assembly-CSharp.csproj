@@ -63,6 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_MK\MKGlassFree\MKGlassFreeMaterialHelper.cs" />
+    <Compile Include="Assets\DebugGUI\Attributes\DebugGUIGraphAttribute.cs" />
+    <Compile Include="Assets\DebugGUI\Attributes\DebugGUIPrintAttribute.cs" />
+    <Compile Include="Assets\DebugGUI\DebugGUI.cs" />
+    <Compile Include="Assets\DebugGUI\Examples\DebugGUIExamples.cs" />
     <Compile Include="Assets\Field - Complete Main Menu (Lite)\Scripts\AnimatorDisableHelper.cs" />
     <Compile Include="Assets\Field - Complete Main Menu (Lite)\Scripts\ChatUIManager.cs" />
     <Compile Include="Assets\Field - Complete Main Menu (Lite)\Scripts\CustomInputField.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="Assets\Scripts\TranslationButton.cs" />
     <Compile Include="Assets\Scripts\TranslationManager.cs" />
     <None Include="Assets\_MK\MKGlassFree\Shader\MKGlassCommonFree.shader" />
+    <None Include="Assets\DebugGUI\README.txt" />
     <None Include="Assets\_MK\MKGlassFree\Shader\Inc\Common\MKGlassInc.cginc" />
     <None Include="Assets\_MK\MKGlassFree\Shader\Inc\Meta\MKGlassMetaIO.cginc" />
     <None Include="Assets\Field - Complete Main Menu (Lite)\Shaders\Dissolve.shader" />
