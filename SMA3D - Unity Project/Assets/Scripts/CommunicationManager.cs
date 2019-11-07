@@ -112,15 +112,15 @@ namespace Assets.Scripts
             DebugGUI.Graph("WithoutCW1", _buildingWithoutCw);
         }
 
-        public float tableSpeed;
         //Parse received data
         private void ParseData(string data)
         {
             if (!string.IsNullOrEmpty(data) && data.Split('#').Length == 3)
             {
+                //Divide por 100 pois a unity faz o parse de 3.12 como 312
                 _buildingWithoutCw = float.Parse(data.Split('#')[0])/100;
                 _buildingWithCw = float.Parse(data.Split('#')[1])/100;
-                //var tableSpeed = float.Parse(data.Split('#')[2]);
+                var tableSpeed = float.Parse(data.Split('#')[2]);
 
                 TableReal.UpdateValues(_buildingWithoutCw, _buildingWithCw, tableSpeed);
             }

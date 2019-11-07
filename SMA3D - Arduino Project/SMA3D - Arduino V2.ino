@@ -23,7 +23,7 @@ void loop()
   mpuBuildingWithoutCW.update();
   mpuBuildingWithCW.update();
 
-  if(millis() - timer > 10)
+  if(millis() - timer > 50)
   {
     //Send data
     Serial.println(String(mpuBuildingWithoutCW.getAccX()) + "#" + String(mpuBuildingWithCW.getAccX()) + "#" + String(tableSpeed));
@@ -35,7 +35,10 @@ void loop()
     //Read and set table speed
     String command = Serial.readStringUntil('\n');
 
-    tableSpeed = map(command.toInt(), 0, 100, 0, 255);
-    analogWrite(12, tableSpeed);
+	if(command.length() > 0 && command.length() < 4)
+    {
+		tableSpeed = map(command.toInt(), 0, 100, 0, 255);
+		analogWrite(12, tableSpeed);
+	}
   }
 }

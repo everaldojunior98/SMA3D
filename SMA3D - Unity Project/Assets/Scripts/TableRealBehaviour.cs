@@ -4,6 +4,7 @@
  * Date: 19/05/2019
  */
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ namespace Assets.Scripts
         public Text BuildingWithCwText;
         public Text CorrectionFactorText;
 
+        public float lerpSpeed = 2.5f;
+
         //Transforms to set oscillation position
         public Transform TableTransform;
         public Transform BuildingWithoutCwTransform;
@@ -23,28 +26,8 @@ namespace Assets.Scripts
 
         public Transform PendulumTransform;
 
-        private float _correctionFactor;
-
         //Coefficient of oscillation of the material of the structure
         public float OscillationCoefficient = 20;
-
-        private float _frequencyWithoutCw;
-        private float _frequencyWithCw;
-
-        //Timer to calculate frequency
-        private float _timer = 1;
-
-        //Vars to calculate frequency
-        private float _lastAccelWithoutCw;
-        private int _inversionsWithoutCw;
-        private float _periodWithoutCw;
-        private float _lastPeriodWithoutCw;
-
-        //Vars to calculate frequency
-        private float _lastAccelWithCw;
-        private int _inversionsWithCw;
-        private float _periodWithCw;
-        private float _lastPeriodWithCw;
 
         //Table max amplitude
         private float _amplitude = 0.35f;
@@ -56,6 +39,17 @@ namespace Assets.Scripts
         private float _accelWithout;
         private float _accelWith;
         private float _tableSpeed;
+
+        private float _frequencyWithoutCw;
+        private float _frequencyWithCw;
+        private float _correctionFactor;
+
+
+        private int _inversionsWithCw;
+        private int _initialInversionTimeWithCw;
+        private float _timer;
+        private int _inversionsWithoutCw;
+        private int _initialInversionTimeWithoutCw;
 
         void Start()
         {
@@ -74,6 +68,12 @@ namespace Assets.Scripts
             _accelWithout = accelWithoutCw;
             _accelWith = accelWithCw;
             _tableSpeed = tableSpeed;
+
+            if (Math.Abs(_accelWith) < 0.02f)
+                _inversionsWithCw++;
+
+            if (Math.Abs(_accelWithout) < 0.02f)
+                _inversionsWithoutCw++;
         }
 
         void Update()
@@ -81,29 +81,49 @@ namespace Assets.Scripts
             if (!_isConnected)
                 return;
 
-            //Calculates frequency
-            _timer -= Time.deltaTime;
-            if (_timer < 0)
+            _timer += Time.deltaTime;
+
+            //Calculates de frequency with cw
+            if (_inversionsWithCw == 2)
             {
-                _frequencyWithoutCw = 1 / _periodWithoutCw;
-                _frequencyWithCw = 1 / _periodWithCw;
-                
-                _timer = 1;
+                _inversionsWithCw = 0;
+                _frequencyWithCw = 1f / ((int) _timer % 60 - _initialInversionTimeWithCw);
+
+                _initialInversionTimeWithCw = (int) _timer % 60;
             }
 
+            //Calculates de frequency with cw
+            if (_inversionsWithoutCw == 2)
+            {
+                _inversionsWithoutCw = 0;
+                _frequencyWithoutCw = 1f / ((int)_timer % 60 - _initialInversionTimeWithoutCw);
+
+                _initialInversionTimeWithoutCw = (int)_timer % 60;
+            }
+
+            //Calculate de correction factor
+            _correctionFactor = 1 - _frequencyWithCw / _frequencyWithoutCw;
+
             //Fill HUD
-            BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + _frequencyWithoutCw.ToString("F2") + " Hz";
-            BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " + _frequencyWithCw.ToString("F2") + " Hz";
-            CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " + (_correctionFactor * 100).ToString("F2") + "%";
+            BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " +
+                                         _frequencyWithoutCw.ToString("F2") + " Hz";
+
+            BuildingWithCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " +
+                                      _frequencyWithCw.ToString("F2") + " Hz";
+
+            CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " +
+                                        (float.IsInfinity(_correctionFactor) || float.IsNaN(_correctionFactor)
+                                            ? "0.00"
+                                            : (_correctionFactor * 100).ToString("F2")) + "%";
 
             if (TableTransform != null && BuildingWithoutCwTransform != null && BuildingWithCwTransform != null)
             {
-                TableTransform.position = new Vector3(_accelWithout * _amplitude, TableTransform.position.y, TableTransform.position.z);
+                TableTransform.position = Vector3.Lerp(TableTransform.position, new Vector3(_accelWithout * _amplitude, TableTransform.position.y, TableTransform.position.z), lerpSpeed * Time.deltaTime);
 
-                PendulumTransform.eulerAngles = new Vector3(PendulumTransform.eulerAngles.x, PendulumTransform.eulerAngles.y, - OscillationCoefficient * _accelWithout * 2);
+                PendulumTransform.eulerAngles = Vector3.Lerp(PendulumTransform.eulerAngles, new Vector3(PendulumTransform.eulerAngles.x, PendulumTransform.eulerAngles.y, - OscillationCoefficient * _accelWithout * 2), lerpSpeed * Time.deltaTime);
 
-                BuildingWithoutCwTransform.eulerAngles = new Vector3(BuildingWithoutCwTransform.eulerAngles.x, BuildingWithoutCwTransform.eulerAngles.y, -90 - 10 * _accelWithout);
-                BuildingWithCwTransform.eulerAngles = new Vector3(BuildingWithCwTransform.eulerAngles.x, BuildingWithCwTransform.eulerAngles.y, -90 - 10 * _accelWith);
+                BuildingWithoutCwTransform.eulerAngles = Vector3.Lerp(BuildingWithoutCwTransform.eulerAngles, new Vector3(BuildingWithoutCwTransform.eulerAngles.x, BuildingWithoutCwTransform.eulerAngles.y, -90 - 10 * _accelWithout), lerpSpeed* Time.deltaTime);
+                BuildingWithCwTransform.eulerAngles = Vector3.Lerp(BuildingWithCwTransform.eulerAngles, new Vector3(BuildingWithCwTransform.eulerAngles.x, BuildingWithCwTransform.eulerAngles.y, -90 - 10 * _accelWith), lerpSpeed* Time.deltaTime);
             }
         }
     }
