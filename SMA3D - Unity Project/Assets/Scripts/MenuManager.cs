@@ -26,7 +26,10 @@ namespace Assets.Scripts
                 else
                 {
                     DebugGUI.RemoveGraph("WithCW");
+                    DebugGUI.RemoveGraph("WithCW1");
                     DebugGUI.RemoveGraph("WithoutCW");
+                    DebugGUI.RemoveGraph("WithoutCW1");
+
                     LoadScene(0);
                 }
         }

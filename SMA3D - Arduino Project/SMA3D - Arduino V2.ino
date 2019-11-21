@@ -9,13 +9,28 @@ unsigned long timer = 0;
 //Current table speed
 float tableSpeed = 0;
 
+//Pinout Motor Shield
+int enb = 2;
+int ina = 3;
+int inb = 4;
+int pwm = 5;
+
 void setup()
 {
   Serial.begin(9600);
-  
+
   Wire.begin();
   mpuBuildingWithoutCW.begin();
   mpuBuildingWithCW.begin();
+
+  pinMode(enb, OUTPUT);
+  pinMode(ina, OUTPUT);
+  pinMode(inb, OUTPUT);
+  pinMode(pwm, OUTPUT);
+
+  digitalWrite(enb, HIGH);
+  digitalWrite(ina, HIGH);
+  digitalWrite(inb, LOW);
 }
 
 void loop()
@@ -23,22 +38,26 @@ void loop()
   mpuBuildingWithoutCW.update();
   mpuBuildingWithCW.update();
 
-  if(millis() - timer > 50)
+  if (millis() - timer > 10)
   {
     //Send data
     Serial.println(String(mpuBuildingWithoutCW.getAccX()) + "#" + String(mpuBuildingWithCW.getAccX()) + "#" + String(tableSpeed));
     timer = millis();
   }
+  //Read and set table speed
+  String command = "";
 
-  if (Serial.available())
+  while (Serial.available() > 0)
   {
-    //Read and set table speed
-    String command = Serial.readStringUntil('\n');
+    char c = Serial.read();
 
-	if(command.length() > 0 && command.length() < 4)
+    if (c != '#'){
+      command.concat(c);
+      Serial.println(command);}
+    else if (command.length() > 0 && command.length() < 4)
     {
-		tableSpeed = map(command.toInt(), 0, 100, 0, 255);
-		analogWrite(12, tableSpeed);
-	}
+      tableSpeed = map(command.toInt(), 0, 100, 0, 255);
+      analogWrite(pwm, tableSpeed);
+    }
   }
 }

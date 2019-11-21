@@ -4,6 +4,7 @@
  * Url: https://wiki.unity3d.com/index.php/MouseOrbitImproved
  */
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts
 {
@@ -40,7 +41,7 @@ namespace Assets.Scripts
 
         private void LateUpdate()
         {
-            if (Target && Input.GetMouseButton(0))
+            if (Target && Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null)
                 UpdateCameraPosition();
         }
 

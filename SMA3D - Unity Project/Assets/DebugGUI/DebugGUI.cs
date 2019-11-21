@@ -31,7 +31,7 @@ public class DebugGUI : MonoBehaviour
     const float temporaryLogLifetime = 5f;
 
     // Show logs and graphs in build?
-    [SerializeField] bool drawInBuild = false;
+    [SerializeField] bool drawInBuild = true;
 
     [SerializeField] bool displayGraphs = true;
     [SerializeField] bool displayLogs = true;

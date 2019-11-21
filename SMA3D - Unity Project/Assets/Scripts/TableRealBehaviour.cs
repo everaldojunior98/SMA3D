@@ -17,7 +17,7 @@ namespace Assets.Scripts
         public Text BuildingWithCwText;
         public Text CorrectionFactorText;
 
-        public float lerpSpeed = 2.5f;
+        public float lerpSpeed = 30f;
 
         //Transforms to set oscillation position
         public Transform TableTransform;
@@ -30,7 +30,7 @@ namespace Assets.Scripts
         public float OscillationCoefficient = 20;
 
         //Table max amplitude
-        private float _amplitude = 0.35f;
+        private float _amplitude = 0.65f;
 
         //Var to control connection with Arduino
         private bool _isConnected;
@@ -43,7 +43,6 @@ namespace Assets.Scripts
         private float _frequencyWithoutCw;
         private float _frequencyWithCw;
         private float _correctionFactor;
-
 
         private int _inversionsWithCw;
         private int _initialInversionTimeWithCw;
@@ -68,6 +67,9 @@ namespace Assets.Scripts
             _accelWithout = accelWithoutCw;
             _accelWith = accelWithCw;
             _tableSpeed = tableSpeed;
+
+            //Calculate de correction factor
+            _correctionFactor = 1 - _accelWith / _accelWithout;
 
             if (Math.Abs(_accelWith) < 0.02f)
                 _inversionsWithCw++;
@@ -101,9 +103,6 @@ namespace Assets.Scripts
                 _initialInversionTimeWithoutCw = (int)_timer % 60;
             }
 
-            //Calculate de correction factor
-            _correctionFactor = 1 - _frequencyWithCw / _frequencyWithoutCw;
-
             //Fill HUD
             BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " +
                                          _frequencyWithoutCw.ToString("F2") + " Hz";
@@ -118,12 +117,23 @@ namespace Assets.Scripts
 
             if (TableTransform != null && BuildingWithoutCwTransform != null && BuildingWithCwTransform != null)
             {
-                TableTransform.position = Vector3.Lerp(TableTransform.position, new Vector3(_accelWithout * _amplitude, TableTransform.position.y, TableTransform.position.z), lerpSpeed * Time.deltaTime);
+                TableTransform.position = Vector3.Lerp(TableTransform.position,
+                    new Vector3(_accelWithout * _amplitude, TableTransform.position.y, TableTransform.position.z),
+                    lerpSpeed * Time.deltaTime);
 
-                PendulumTransform.eulerAngles = Vector3.Lerp(PendulumTransform.eulerAngles, new Vector3(PendulumTransform.eulerAngles.x, PendulumTransform.eulerAngles.y, - OscillationCoefficient * _accelWithout * 2), lerpSpeed * Time.deltaTime);
 
-                BuildingWithoutCwTransform.eulerAngles = Vector3.Lerp(BuildingWithoutCwTransform.eulerAngles, new Vector3(BuildingWithoutCwTransform.eulerAngles.x, BuildingWithoutCwTransform.eulerAngles.y, -90 - 10 * _accelWithout), lerpSpeed* Time.deltaTime);
-                BuildingWithCwTransform.eulerAngles = Vector3.Lerp(BuildingWithCwTransform.eulerAngles, new Vector3(BuildingWithCwTransform.eulerAngles.x, BuildingWithCwTransform.eulerAngles.y, -90 - 10 * _accelWith), lerpSpeed* Time.deltaTime);
+                PendulumTransform.rotation = Quaternion.Lerp(PendulumTransform.rotation,
+                    Quaternion.Euler(new Vector3(PendulumTransform.eulerAngles.x, PendulumTransform.eulerAngles.y,
+                        -OscillationCoefficient * _accelWithout * 2.5f)), lerpSpeed * Time.deltaTime);
+
+                BuildingWithoutCwTransform.rotation = Quaternion.Lerp(BuildingWithoutCwTransform.rotation,
+                    Quaternion.Euler(new Vector3(BuildingWithoutCwTransform.eulerAngles.x,
+                        BuildingWithoutCwTransform.eulerAngles.y, -90 - OscillationCoefficient * _accelWithout)), lerpSpeed * Time.deltaTime);
+
+
+                BuildingWithCwTransform.rotation = Quaternion.Lerp(BuildingWithCwTransform.rotation,
+                    Quaternion.Euler(new Vector3(BuildingWithCwTransform.eulerAngles.x,
+                        BuildingWithCwTransform.eulerAngles.y, -90 - OscillationCoefficient * _accelWith)), lerpSpeed * Time.deltaTime);
             }
         }
     }

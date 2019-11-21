@@ -101,6 +101,7 @@
     <Compile Include="Assets\Scripts\MouseOrbitImproved.cs" />
     <Compile Include="Assets\Scripts\PortsDropdown.cs" />
     <Compile Include="Assets\Scripts\SetTranslation.cs" />
+    <Compile Include="Assets\Scripts\SliderDrag.cs" />
     <Compile Include="Assets\Scripts\TableRealBehaviour.cs" />
     <Compile Include="Assets\Scripts\TableSimulationBehaviour.cs" />
     <Compile Include="Assets\Scripts\TranslationButton.cs" />

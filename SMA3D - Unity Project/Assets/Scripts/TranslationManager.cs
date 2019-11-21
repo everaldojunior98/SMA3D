@@ -40,6 +40,7 @@ namespace Assets.Scripts
                 {"CONFIGURATION", Tuple.Create("CONFIGURATION", "CONFIGURAÇÃO")},
                 {"PORT", Tuple.Create("Port", "Porta")},
                 {"CONNECT", Tuple.Create("CONNECT", "CONECTAR")},
+                {"DISCONNECT", Tuple.Create("DISCONNECT", "DESCONECTAR")},
                 {"PENDULUM", Tuple.Create("PENDULUM", "PÊNDULO")},
                 {"SIMULATION", Tuple.Create("SIMULATION", "SIMULADOR")},
                 {"NATURAL_FREQUENCY", Tuple.Create("Natural frequency (Hz)", "Frequência natural (Hz)")},
@@ -48,6 +49,7 @@ namespace Assets.Scripts
                 {"SIMULATE", Tuple.Create("SIMULATE", "SIMULAR")},
                 {"LENGTH", Tuple.Create("LENGTH:", "Comprimento:")},
                 {"SOURCE", Tuple.Create("SOURCE CODE", "CÓDIGO FONTE")},
+                {"MOTOR_SPEED", Tuple.Create("Motor Speed", "Velocidade do motor")},
                 {"REAL", Tuple.Create("REAL", "REAL")},
                 {
                     "DESC_SIMULATION",
@@ -66,8 +68,8 @@ namespace Assets.Scripts
                 {
                     "DESC_INFO",
                     Tuple.Create(
-                        "Students:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\nTeacher: David de Almeida Fiorillo",
-                        "Alunos:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\nProfessor: David de Almeida Fiorillo")
+                        "Students:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\n\n",
+                        "Alunos:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\n\n")
                 },
                 {
                     "TITLE",
