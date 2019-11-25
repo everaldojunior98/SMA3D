@@ -68,8 +68,8 @@ namespace Assets.Scripts
                 {
                     "DESC_INFO",
                     Tuple.Create(
-                        "Students:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\n\n",
-                        "Alunos:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges\n\n\n")
+                        "Students:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges",
+                        "Alunos:\nEveraldo Chaves de Oliveira Junior\nGabriel Totola Loyola\nPedro de Oliveira Ramaldes Fafá Borges")
                 },
                 {
                     "TITLE",

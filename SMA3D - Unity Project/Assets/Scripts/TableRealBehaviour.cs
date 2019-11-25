@@ -30,7 +30,7 @@ namespace Assets.Scripts
         public float OscillationCoefficient = 20;
 
         //Table max amplitude
-        private float _amplitude = 0.65f;
+        private float _amplitude = 1.3f;
 
         //Var to control connection with Arduino
         private bool _isConnected;
@@ -44,11 +44,19 @@ namespace Assets.Scripts
         private float _frequencyWithCw;
         private float _correctionFactor;
 
-        private int _inversionsWithCw;
-        private int _initialInversionTimeWithCw;
-        private float _timer;
-        private int _inversionsWithoutCw;
-        private int _initialInversionTimeWithoutCw;
+        //Correction vars
+        private int i = 1;
+        private float lastWith;
+        private float lastWithout;
+
+        //Frequency vars
+        /*private int inversionWithCw;
+        private float timeWithCw;
+        private float lastValueWithCw;
+
+        private int inversionWithoutCw;
+        private float timeWithoutCw;
+        private float lastValueWithoutCw;*/
 
         void Start()
         {
@@ -68,14 +76,34 @@ namespace Assets.Scripts
             _accelWith = accelWithCw;
             _tableSpeed = tableSpeed;
 
-            //Calculate de correction factor
-            _correctionFactor = 1 - _accelWith / _accelWithout;
+            if (Math.Abs(accelWithCw) > lastWith)
+                lastWith = Math.Abs(accelWithCw);
 
-            if (Math.Abs(_accelWith) < 0.02f)
-                _inversionsWithCw++;
+            if (Math.Abs(accelWithoutCw) > lastWithout)
+                lastWithout = Math.Abs(accelWithoutCw);
 
-            if (Math.Abs(_accelWithout) < 0.02f)
-                _inversionsWithoutCw++;
+            if (i % 100 == 0)
+            {
+                _correctionFactor = 1 - lastWith / lastWithout;
+                lastWith = 0;
+                lastWithout = 0;
+            }
+
+            /*if (accelWithCw < 0 && lastValueWithCw > 0)
+                inversionWithCw++;
+            else if (accelWithCw > 0 && lastValueWithCw < 0)
+                inversionWithCw++;
+
+            lastValueWithCw = accelWithCw;
+
+            if (accelWithoutCw < 0 && lastValueWithoutCw > 0)
+                inversionWithoutCw++;
+            else if (accelWithoutCw > 0 && lastValueWithoutCw < 0)
+                inversionWithoutCw++;
+
+            lastValueWithoutCw = accelWithoutCw;*/
+
+            i++;
         }
 
         void Update()
@@ -83,25 +111,23 @@ namespace Assets.Scripts
             if (!_isConnected)
                 return;
 
-            _timer += Time.deltaTime;
-
-            //Calculates de frequency with cw
-            if (_inversionsWithCw == 2)
+            /*//Calculates de frequency with cw
+            if (inversionWithCw == 2)
             {
-                _inversionsWithCw = 0;
-                _frequencyWithCw = 1f / ((int) _timer % 60 - _initialInversionTimeWithCw);
+                _frequencyWithCw = 1 / (Time.time - timeWithCw);
 
-                _initialInversionTimeWithCw = (int) _timer % 60;
+                inversionWithCw = 0;
+                timeWithCw = Time.time;
             }
 
-            //Calculates de frequency with cw
-            if (_inversionsWithoutCw == 2)
+            //Calculates de frequency without cw
+            if (inversionWithoutCw == 2)
             {
-                _inversionsWithoutCw = 0;
-                _frequencyWithoutCw = 1f / ((int)_timer % 60 - _initialInversionTimeWithoutCw);
+                _frequencyWithoutCw = 1 / (Time.time - timeWithoutCw);
 
-                _initialInversionTimeWithoutCw = (int)_timer % 60;
-            }
+                inversionWithoutCw = 0;
+                timeWithoutCw = Time.time;
+            }*/
 
             //Fill HUD
             BuildingWithoutCwText.text = TranslationManager.Instance.GetTranslation("FREQUENCY") + " " +
@@ -111,7 +137,7 @@ namespace Assets.Scripts
                                       _frequencyWithCw.ToString("F2") + " Hz";
 
             CorrectionFactorText.text = TranslationManager.Instance.GetTranslation("FACTOR") + " " +
-                                        (float.IsInfinity(_correctionFactor) || float.IsNaN(_correctionFactor)
+                                        (float.IsInfinity(_correctionFactor) || float.IsNaN(_correctionFactor) || _correctionFactor < 0
                                             ? "0.00"
                                             : (_correctionFactor * 100).ToString("F2")) + "%";
 
