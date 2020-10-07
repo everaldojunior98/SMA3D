@@ -13,7 +13,9 @@ Toda a simulação foi desenvolvida utilizando a Unity 3D, para continuar o dese
 Unity 3D 2019.1.1 - https://unity3d.com/pt/get-unity/download/archive
 ```
 
-## Capturas de tela
+## Vídeo/Capturas de tela
+[![Video](https://i.imgur.com/NHwMTyr.png)](https://www.youtube.com/watch?v=1zX7X6oqg-I)
+
 ![Menu](https://i.ibb.co/vsVDHkZ/3.png)
 
 ![Simulação](https://i.ibb.co/4pSY589/1.png)
